@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SalesWebMVC.Data;
 using SalesWebMVC.Models;
 
 namespace SalesWebMVC
@@ -24,9 +25,11 @@ namespace SalesWebMVC
                     builder.MigrationsAssembly("SalesWebMVC")));
 
             services.AddMvc();
+            services.AddScoped<SeedingService>();
+
         }
 
-        public void Configure(IApplicationBuilder app, Microsoft.AspNetCore.Hosting.IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, Microsoft.AspNetCore.Hosting.IHostingEnvironment env, SeedingService seedingService)
         {
             if (env.IsDevelopment())
             {
@@ -37,7 +40,7 @@ namespace SalesWebMVC
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
-
+            seedingService.Seed();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -47,6 +50,8 @@ namespace SalesWebMVC
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+
         }
     }
 }
