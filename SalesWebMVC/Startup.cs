@@ -28,6 +28,7 @@ namespace SalesWebMVC
             services.AddMvc();
             services.AddScoped<SeedingService>();
             services.AddScoped<SellerService>();
+            services.AddScoped<DepartmentService>();
 
         }
 

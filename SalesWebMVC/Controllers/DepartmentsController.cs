@@ -152,5 +152,6 @@ namespace SalesWebMVC.Controllers
         {
             return _context.Department.Any(e => e.Id == id);
         }
+
     }
 }
