@@ -14,6 +14,7 @@ namespace SalesWebMVC.Models
         public DateTime BirthDate{ get; set; } // Propriedade para armazenar a data de nascimento do vendedor, utilizada para cálculos de idade e outras operações
         public double BaseSalary { get; set; } // Propriedade para armazenar o salário base do vendedor, utilizada para cálculos de remuneração
         public Department Department { get; set; } // Associação entre as classes
+        public int DepartmentId { get; set; } // Propriedade para armazenar o identificador do departamento, utilizada para estabelecer a relação entre o vendedor e o departamento no banco de dados
         public ICollection <SalesRecord> Sales { get; set; } = new List<SalesRecord>(); // Associação entre as classes
 
         public Seller() // Construtor padrão para permitir a criação de objetos sem parâmetros, necessário para algumas operações do Entity Framework
