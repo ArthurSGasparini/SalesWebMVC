@@ -38,6 +38,11 @@ namespace SalesWebMVC.Controllers
         [ValidateAntiForgeryToken] // A anotação [ValidateAntiForgeryToken] é usada para proteger contra ataques de falsificação de solicitação entre sites (CSRF). Ela garante que o formulário enviado para esta ação contenha um token de validação que corresponda ao token gerado pelo servidor, ajudando a prevenir ataques maliciosos.
         public IActionResult Create(Seller seller)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(seller);
+            }
+
             _sellerService.Insert(seller);
             return RedirectToAction(nameof(Index));
         }
@@ -103,6 +108,10 @@ namespace SalesWebMVC.Controllers
         [ValidateAntiForgeryToken]// A anotação [ValidateAntiForgeryToken] é usada para proteger contra ataques de falsificação de solicitação entre sites (CSRF). Ela garante que o formulário enviado para esta ação contenha um token de validação que corresponda ao token gerado pelo servidor, ajudando a prevenir ataques maliciosos.
         public IActionResult Edit(int id, Seller seller) // A ação Edit é responsável por exibir um formulário para editar um vendedor existente. Ela recebe um parâmetro id que representa o identificador do vendedor a ser editado. O método verifica se o id é nulo e, em caso afirmativo, retorna uma resposta NotFound. Em seguida, ele busca o vendedor correspondente ao id usando o serviço _sellerService.FindById(id.Value). Se o vendedor não for encontrado, novamente retorna NotFound. Caso contrário, ele prepara uma lista de departamentos usando _departmentService.FindAll() e cria um objeto SellerFormViewModel que contém o vendedor e a lista de departamentos. Por fim, retorna a view com o viewModel para exibir o formulário de edição.
         {
+            if (!ModelState.IsValid)
+            {
+                return View(seller);
+            }
             if (id != seller.Id)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id mismatch" });
