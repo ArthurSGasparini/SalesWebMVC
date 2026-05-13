@@ -5,9 +5,7 @@ namespace SalesWebMVC.Migrations
 {
     public partial class Initial : Migration
     {
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.CreateTable(
+        protected override void Up(MigrationBuilder migrationBuilder) => migrationBuilder.CreateTable(
                 name: "Department",
                 columns: table => new
                 {
@@ -19,12 +17,8 @@ namespace SalesWebMVC.Migrations
                 {
                     table.PrimaryKey("PK_Department", x => x.Id);
                 });
-        }
 
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropTable(
+        protected override void Down(MigrationBuilder migrationBuilder) => migrationBuilder.DropTable(
                 name: "Department");
-        }
     }
 }

@@ -19,10 +19,7 @@ namespace SalesWebMVC.Controllers
         }
 
         // GET: Departments
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.Department.ToListAsync());
-        }
+        public async Task<IActionResult> Index() => View(await _context.Department.ToListAsync());
 
         // GET: Departments/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -43,10 +40,7 @@ namespace SalesWebMVC.Controllers
         }
 
         // GET: Departments/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
+        public IActionResult Create() => View();
 
         // POST: Departments/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -148,10 +142,7 @@ namespace SalesWebMVC.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool DepartmentExists(int id)
-        {
-            return _context.Department.Any(e => e.Id == id);
-        }
+        private bool DepartmentExists(int id) => _context.Department.Any(e => e.Id == id);
 
     }
 }

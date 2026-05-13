@@ -50,20 +50,11 @@ namespace SalesWebMVC.Models
             Department = department;
         }
 
-        public void AddSales(SalesRecord sr) // Método para adicionar uma venda à coleção de vendas do vendedor
-        {
-            Sales.Add(sr);
-        }
+        public void AddSales(SalesRecord sr) => Sales.Add(sr); // Método para adicionar uma venda à coleção de vendas do vendedor
 
-        public void RemoveSales(SalesRecord sr) // Método para remover uma venda da coleção de vendas do vendedor
-        {
-            Sales.Remove(sr);
-        }
+        public void RemoveSales(SalesRecord sr) => Sales.Remove(sr); // Método para remover uma venda da coleção de vendas do vendedor
 
-        public double TotalSales(DateTime initial, DateTime final) // Método para calcular o total de vendas do vendedor em um período específico, utilizando LINQ para filtrar as vendas por data e somar os valores
-        {
-            return Sales.Where(sr => sr.Date >= initial && sr.Date <= final).Sum(sr => sr.Amount); // LINQ para filtrar as vendas por data e somar os valores
-        }
+        public double TotalSales(DateTime initial, DateTime final) => Sales.Where(sr => sr.Date >= initial && sr.Date <= final).Sum(sr => sr.Amount); // Método para calcular o total de vendas do vendedor em um período específico, utilizando LINQ para filtrar as vendas por data e somar os valores // LINQ para filtrar as vendas por data e somar os valores
 
 
     }

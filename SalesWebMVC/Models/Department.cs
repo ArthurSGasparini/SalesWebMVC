@@ -20,14 +20,8 @@ namespace SalesWebMVC.Models
             Name = name;
         }
 
-        public void AddSeller(Seller seller) // Método para adicionar um vendedor à coleção de vendedores do departamento
-        {
-            Sellers.Add(seller);
-        }
+        public void AddSeller(Seller seller) => Sellers.Add(seller); // Método para adicionar um vendedor à coleção de vendedores do departamento
 
-        public double TotalSales(DateTime initial, DateTime final) // Método para calcular o total de vendas do departamento em um período específico, utilizando LINQ para somar as vendas de todos os vendedores do departamento
-        {
-            return Sellers.Sum(seller => seller.TotalSales(initial, final)); // LINQ para somar as vendas de todos os vendedores do departamento
-        }
+        public double TotalSales(DateTime initial, DateTime final) => Sellers.Sum(seller => seller.TotalSales(initial, final)); // Método para calcular o total de vendas do departamento em um período específico, utilizando LINQ para somar as vendas de todos os vendedores do departamento // LINQ para somar as vendas de todos os vendedores do departamento
     }
 }
