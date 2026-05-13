@@ -72,8 +72,16 @@ namespace SalesWebMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id) // A ação Delete é responsável por processar a exclusão de um vendedor específico. Ela recebe um parâmetro id que representa o identificador do vendedor a ser excluído. O método chama o serviço _sellerService.Remove(id) para remover o vendedor do banco de dados. Após a exclusão, ele redireciona para a ação Index para exibir a lista atualizada de vendedores.
         {
-            await _sellerService.RemoveAsync(id);
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                await _sellerService.RemoveAsync(id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (IntegrityException e) // se ocorrer uma exceção do tipo IntegrityException durante a exclusão do vendedor, o método captura a exceção e redireciona para a ação Error, passando a mensagem de erro como parâmetro. Isso permite que o sistema exiba uma página de erro personalizada com informações sobre o problema ocorrido durante a exclusão.
+            {
+                return RedirectToAction(nameof(Error), new { message = e.Message });
+
+            }
         }
 
         public async Task<IActionResult> Details(int? id) // A ação Details é responsável por exibir os detalhes de um vendedor específico. Ela recebe um parâmetro id que representa o identificador do vendedor cujos detalhes devem ser exibidos. O método verifica se o id é nulo e, em caso afirmativo, retorna uma resposta NotFound. Em seguida, ele busca o vendedor correspondente ao id usando o serviço _sellerService.FindByIdAsync(id.Value). Se o vendedor não for encontrado, novamente retorna NotFound. Caso contrário, retorna a view com o objeto do vendedor para exibir os detalhes.
@@ -130,12 +138,12 @@ namespace SalesWebMVC.Controllers
             {
                 return RedirectToAction(nameof(Error), new { message = e.Message });
             }
-            
+
         }
 
         public IActionResult Error(string message) // A ação Error é responsável por exibir uma página de erro personalizada. Ela recebe um parâmetro message que representa a mensagem de erro a ser exibida. O método cria um objeto ErrorViewModel com a mensagem de erro e retorna a view correspondente para exibir a página de erro.
         {
-            var viewModel = new ErrorViewModel 
+            var viewModel = new ErrorViewModel
             {
                 Message = message,
                 RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier

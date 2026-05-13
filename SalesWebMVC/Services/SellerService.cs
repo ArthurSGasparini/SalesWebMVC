@@ -29,9 +29,16 @@ namespace SalesWebMVC.Services
 
         public async Task RemoveAsync(int id) // funcao responsavel por remover um vendedor do banco de dados com base em seu ID. O método é assíncrono, o que significa que ele pode ser executado de forma não bloqueante, permitindo que outras operações sejam realizadas enquanto a remoção está em andamento. O método recebe um inteiro id como parâmetro, que representa o ID do vendedor a ser removido. Dentro do método, é feita uma consulta ao contexto do banco de dados usando o método FindAsync para encontrar o vendedor correspondente ao ID fornecido. Em seguida, o vendedor encontrado é removido do contexto usando o método Remove, e as alterações são salvas no banco de dados usando o método SaveChangesAsync. O uso do await garante que o método aguarde a conclusão da operação de salvamento antes de continuar a execução.
         {
-            var obj = await _context.Seller.FindAsync(id);
-            _context.Seller.Remove(obj);
-            await _context.SaveChangesAsync();
+            try
+            {
+                var obj = await _context.Seller.FindAsync(id);
+                _context.Seller.Remove(obj);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException e) // captura a exceção DbUpdateException, que pode ocorrer durante a operação de remoção do vendedor. Essa exceção é lançada quando há um problema ao atualizar o banco de dados, como uma violação de integridade referencial. Se essa exceção for capturada, uma nova exceção personalizada IntegrityException é lançada com a mensagem da exceção original, indicando que houve um problema de integridade durante a remoção do vendedor.
+            {
+                throw new IntegrityException(e.Message);
+            }
         }
 
         public async Task UpdateAsync(Seller obj) // funcao responsavel por atualizar as informações de um vendedor no banco de dados. O método é assíncrono, o que significa que ele pode ser executado de forma não bloqueante, permitindo que outras operações sejam realizadas enquanto a atualização está em andamento. O método recebe um objeto do tipo Seller como parâmetro, que contém as informações atualizadas do vendedor. Dentro do método, é feita uma verificação para garantir que o ID do vendedor a ser atualizado exista no banco de dados usando o método AnyAsync. Se o ID não for encontrado, uma exceção NotFoundException é lançada. Caso contrário, o objeto é atualizado no contexto do banco de dados usando o método Update, e as alterações são salvas no banco de dados usando o método SaveChangesAsync. O uso do await garante que o método aguarde a conclusão da operação de salvamento antes de continuar a execução. Se ocorrer uma exceção de concorrência durante a atualização, uma exceção personalizada DbConcurrencyException é lançada com a mensagem da exceção original.
@@ -46,7 +53,7 @@ namespace SalesWebMVC.Services
                 _context.Update(obj);
                 await _context.SaveChangesAsync();
             }
-            catch(DbUpdateConcurrencyException e)
+            catch (DbUpdateConcurrencyException e)
             {
                 throw new DbConcurrencyException(e.Message);
             }
