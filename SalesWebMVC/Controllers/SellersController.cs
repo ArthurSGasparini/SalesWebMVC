@@ -3,8 +3,10 @@ using SalesWebMVC.Models;
 using SalesWebMVC.Models.ViewModels;
 using SalesWebMVC.Services;
 using SalesWebMVC.Services.Exceptions;
-using System.Collections.Generic;     //A view é um arquivo de interface do usuário que exibe a lista de vendedores cadastrados no sistema. No momento, o método Index retorna apenas a view,
-                                      //mas futuramente pode ser expandido para incluir lógica de consulta ao banco de dados e exibição dos vendedores cadastrados.
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;     //A view é um arquivo de interface do usuário que exibe a lista de vendedores cadastrados no sistema. No momento, o método Index retorna apenas a view,
+                              //mas futuramente pode ser expandido para incluir lógica de consulta ao banco de dados e exibição dos vendedores cadastrados.
 
 namespace SalesWebMVC.Controllers
 {
@@ -46,13 +48,13 @@ namespace SalesWebMVC.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id not provided" });
             }
 
             var obj = _sellerService.FindById(id.Value); // O método FindById é chamado para buscar o vendedor correspondente ao id fornecido. O valor do id é passado como argumento para o método, e o resultado é armazenado na variável obj. Se o vendedor não for encontrado, obj será nulo.
             if (obj == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id not found" });
             }
             return View(obj);
 
@@ -70,12 +72,12 @@ namespace SalesWebMVC.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id not provided" });
             }
             var obj = _sellerService.FindById(id.Value);
             if (obj == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id not found" });
             }
             return View(obj);
         }
@@ -84,12 +86,12 @@ namespace SalesWebMVC.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id not provided" });
             }
             var obj = _sellerService.FindById(id.Value);
             if (obj == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id not found" });
             }
             List<Department> departments = _departmentService.FindAll();
             SellerFormViewModel viewModel = new SellerFormViewModel { Seller = obj, Departments = departments };
@@ -103,21 +105,28 @@ namespace SalesWebMVC.Controllers
         {
             if (id != seller.Id)
             {
-                return BadRequest();
+                return RedirectToAction(nameof(Error), new { message = "Id mismatch" });
             }
             try
             {
                 _sellerService.Update(seller);
                 return RedirectToAction(nameof(Index)); // Após a atualização do vendedor, o método redireciona para a ação Index para exibir a lista atualizada de vendedores. O método RedirectToAction é usado para redirecionar para a ação Index, que é a ação responsável por exibir a lista de vendedores cadastrados no sistema.
             }
-            catch (NotFoundException)
+            catch (ApplicationException e) // A ação Edit é responsável por exibir um formulário para editar um vendedor existente. Ela recebe um parâmetro id que representa o identificador do vendedor a ser editado. O método verifica se o id é nulo e, em caso afirmativo, retorna uma resposta NotFound. Em seguida, ele busca o vendedor correspondente ao id usando o serviço _sellerService.FindById(id.Value). Se o vendedor não for encontrado, novamente retorna NotFound. Caso contrário, ele prepara uma lista de departamentos usando _departmentService.FindAll() e cria um objeto SellerFormViewModel que contém o vendedor e a lista de departamentos. Por fim, retorna a view com o viewModel para exibir o formulário de edição.
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = e.Message });
             }
-            catch (DbConcurrencyException)
+            
+        }
+
+        public IActionResult Error(string message) // A ação Error é responsável por exibir uma página de erro personalizada. Ela recebe um parâmetro message que representa a mensagem de erro a ser exibida. O método cria um objeto ErrorViewModel com a mensagem de erro e retorna a view correspondente para exibir a página de erro.
+        {
+            var viewModel = new ErrorViewModel 
             {
-                return BadRequest();
-            }
+                Message = message,
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            };
+            return View(viewModel);
         }
     }
 }
