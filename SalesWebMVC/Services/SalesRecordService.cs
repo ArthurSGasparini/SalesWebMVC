@@ -34,6 +34,33 @@ namespace SalesWebMVC.Services
                 .ToListAsync();
         }
 
+        public async Task<List<IGrouping<Department,SalesRecord>>> FindByDateGroupingAsync(DateTime? minDate, DateTime? maxDate) // a diferença entre o método FindByDateAsync e o método FindByDateGroupingAsync é que o segundo método retorna os registros de vendas agrupados por departamento do vendedor, enquanto o primeiro método retorna uma lista simples de registros de vendas. O método FindByDateGroupingAsync utiliza a função GroupBy para agrupar os registros de vendas por departamento do vendedor, permitindo que os resultados sejam organizados por departamento. O resultado é uma lista de grupos, onde cada grupo contém os registros de vendas correspondentes a um departamento específico.
+        {
+            var result = from obj in _context.SalesRecord select obj;
+            if (minDate.HasValue)
+            {
+                result = result.Where(x => x.Date >= minDate.Value);
+            }
+            if (maxDate.HasValue)
+            {
+                result = result.Where(x => x.Date <= maxDate.Value);
+            }
+            /* return await result
+                .Include(x => x.Seller)
+                .Include(x => x.Seller.Department)
+                .OrderByDescending(x => x.Date)
+                .GroupBy(x => x.Seller.Department) // agrupa os registros de vendas por departamento do vendedor, permitindo que os resultados sejam organizados por departamento.
+                .ToListAsync();*/
+            var list = await result
+                .Include(x => x.Seller)
+                .Include(x => x.Seller.Department)
+                .OrderByDescending(x => x.Date)
+                .ToListAsync();
+
+            return list.GroupBy(x => x.Seller.Department).ToList();
+
+        }
+
 
 
     }
