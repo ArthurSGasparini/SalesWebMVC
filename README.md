@@ -116,14 +116,6 @@ SalesWebMVC/
 
 5. Abra `http://localhost:5137` no navegador (ou `https://localhost:7166`). Na primeira execução, os dados de exemplo são inseridos automaticamente.
 
-> **Segurança:** nunca coloque senhas, tokens ou chaves de API no repositório. Use variáveis de ambiente ou `user-secrets`.
 
-## Próximos passos
-
-- [ ] Atualizar o projeto para uma versão atual do .NET
-- [ ] Adicionar testes automatizados
-- [ ] Containerizar a aplicação com Docker
-- [ ] Criar pipeline de CI/CD com GitHub Actions
-- [ ] Melhorar o visual das telas
 
 
