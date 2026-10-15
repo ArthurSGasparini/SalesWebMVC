@@ -126,6 +126,4 @@ SalesWebMVC/
 - [ ] Criar pipeline de CI/CD com GitHub Actions
 - [ ] Melhorar o visual das telas
 
-## Autor
 
-**Arthur Gasparini**, [GitHub](https://github.com/ArthurSGasparini)
