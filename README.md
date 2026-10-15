@@ -2,7 +2,7 @@
 
 Aplicação web de gestão de vendas feita com **C#** e **ASP.NET Core MVC**. Ela cadastra departamentos e vendedores e consulta os registros de venda por período, inclusive agrupados por departamento.
 
-Projeto de estudo, desenvolvido durante o curso de C# e ASP.NET Core MVC.
+Projeto de estudo feito acompanhando o curso de Programação Orientada a Objetos em C# do Nélio Alves (Udemy). O sistema é o mesmo do curso, e este repositório é o registro do meu aprendizado.
 
 ## Funcionalidades
 
@@ -116,6 +116,9 @@ SalesWebMVC/
 
 5. Abra `http://localhost:5137` no navegador (ou `https://localhost:7166`). Na primeira execução, os dados de exemplo são inseridos automaticamente.
 
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> 4afa922 (Readme Finalizado)
